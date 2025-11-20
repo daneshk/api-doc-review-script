@@ -1,0 +1,195 @@
+  Please review and improve the API documentation in this Ballerina connector repository to ensure it's optimized for the low-code editor view in Ballerina Integrator (BI).
+
+  Documentation Guidelines
+
+  1. Simplify Function Descriptions
+
+  - Make function descriptions simpler and more descriptive
+  - Avoid using code snippets in descriptions
+  - Focus on what the function does and when to use it
+  - Keep: Valid business context, cost implications, performance notes
+
+  Example:
+  # Before:
+  # Creates a table. The CreateTable operation adds a new table to your account. In an AWS account, table names must be
+  # unique within each Region. That is, you can have two tables with same name if you create the tables in different Regions.
+
+  # After:
+  # Creates a new table in your AWS account. Table names must be unique within each region.
+
+  2. Add Comprehensive Type Descriptions
+
+  - Add descriptions for ALL enum values
+  - The description can span multiple lines
+  - Include what each option means and when to use it
+
+  Example:
+  # Before:
+  public enum ReturnValues {
+      NONE, ALL_OLD, UPDATED_OLD, ALL_NEW, UPDATED_NEW
+  }
+
+  # After:
+  # Which item attributes to return in write operation responses.
+  public enum ReturnValues {
+      # Return no attributes
+      NONE,
+      # Return all attributes as they were before the operation
+      ALL_OLD,
+      # Return only updated attributes as they were before the operation
+      UPDATED_OLD,
+      # Return all attributes as they are after the operation
+      ALL_NEW,
+      # Return only updated attributes as they are after the operation
+      UPDATED_NEW
+  }
+
+  3. Avoid Pro-Code Terminology
+
+  - Remove references to "legacy parameter" - instead use: "Alternative method (use X for newer implementations)"
+  - Don't mention internal code constructs in user-facing descriptions
+  - Simplify technical jargon where possible
+
+  Example:
+  # Before:
+  # This is a legacy parameter. Use ProjectionExpression instead
+
+  # After:
+  # Specific attributes to retrieve (consider using `ProjectionExpression` for newer implementations)
+
+  4. Improve Client/Object Descriptions
+
+  - Make the main client class description comprehensive
+  - Describe the purpose and main capabilities
+  - Remove "Represents" prefix
+
+  Example:
+  # Before:
+  # Represents the Ballerina connector for ServiceName.
+  # This connector allows you to...
+
+  # After:
+  # Client for ServiceName, enabling [list main capabilities].
+  # Supports [key operations] and [additional features].
+
+  5. Make Record Field Descriptions More Descriptive
+
+  - Remove "Represents" prefix from record descriptions
+  - Be direct and descriptive
+  - Keep: "Valid Values:" listings
+  - Keep: Important details about costs, limits, behavior
+
+  Example:
+  # Before:
+  # Represents the AWS credentials.
+  public type AwsCredentials record {
+      # AWS access key
+      string accessKeyId;
+  };
+
+  # After:
+  # AWS credentials for authentication.
+  public type AwsCredentials record {
+      # AWS access key ID
+      string accessKeyId;
+  };
+
+  6. Remove Redundant "Represents" Prefix
+
+  - Don't start record/type descriptions with "Represents"
+  - Be direct: describe what it IS, not that it "represents" something
+
+  Example:
+  # Before:
+  # Represents the response after `WriteBatchItem` operation.
+
+  # After:
+  # Response from a batch write operation containing consumption metrics and unprocessed items.
+
+  7. Handle Operation Name References
+
+  - Remove backticks around operation names when describing them naturally
+  - Keep backticks for:
+    - Field names (TableName, LastEvaluatedKey)
+    - Return types
+    - Specific attribute names that users need to recognize
+    - Enum values when listing options
+
+  Example:
+  # Before:
+  # The response after `BatchWriteItem` operation
+
+  # After:
+  # Response from a batch write operation
+
+  # But KEEP backticks for field references:
+  # Use the value from `LastEvaluatedKey` in the next request
+
+  8. Preserve Valuable Context
+
+  - DO KEEP:
+    - "Valid Values:" enumerations
+    - Cost implications (e.g., "AWS KMS charges apply")
+    - Performance notes (e.g., "More efficient than scan")
+    - Business logic explanations
+    - Multi-line detailed descriptions
+    - Limits and quotas (e.g., "Maximum of 20 indexes")
+    - Security implications
+
+  Example:
+  # GOOD - Keep this detail:
+  # Whether server-side encryption is enabled. If enabled (true), server-side encryption type is set to KMS
+  # and an AWS managed CMK is used (AWS KMS charges apply). If disabled (false) or not specified,
+  # server-side encryption is set to AWS owned CMK
+
+  Reference Examples
+
+  Review these PRs for examples of correct documentation style:
+  - https://github.com/ballerina-platform/module-ballerinax-postgresql/pull/1241
+  - https://github.com/ballerina-platform/module-ballerina-crypto/pull/607
+
+  Files to Review
+
+  Typically review these files in order:
+  1. Client file (e.g., client.bal, caller.bal)
+    - Main client class description
+    - All remote function descriptions
+  2. Records file (e.g., records.bal, types.bal)
+    - All public record types
+    - All record field descriptions
+    - Remove "Represents" prefixes
+  3. Constants/Enums file (e.g., constants.bal, enums.bal)
+    - All public enum types
+    - Add descriptions for every enum value
+    - Remove "Represents" prefixes
+  4. Other API files (e.g., utils.bal, stream.bal)
+    - Public functions and types
+
+  Critical Issues to Check
+
+  1. ❌ Wrong service description - Verify the client description matches the actual service (not copied from another connector)
+  2. ❌ Missing enum value descriptions - Every enum value should have a description
+  3. ❌ "Represents" prefix - Remove from all record and enum descriptions
+  4. ❌ "Legacy parameter" - Replace with friendlier alternative guidance
+  5. ❌ Code snippets in descriptions - Remove complex code examples
+  6. ❌ Missing "Valid Values" - Ensure enum field descriptions include valid values
+
+  Task Checklist
+
+  - Fix main client/service class description
+  - Improve all remote function descriptions
+  - Remove all "Represents" prefixes from records and enums
+  - Add missing enum value descriptions
+  - Replace "legacy parameter" references with helpful alternatives
+  - Remove backticks from operation names (keep for field names)
+  - Verify "Valid Values:" listings are present
+  - Fix any typos found during review
+  - Ensure multi-line helpful context is preserved
+
+  Output Format
+
+  Provide a summary of:
+  1. Critical issues found (especially wrong service descriptions)
+  2. Statistics (number of records fixed, enums improved, etc.)
+  3. Key improvements made with examples
+  4. Files modified with brief description of changes
